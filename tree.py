@@ -13,23 +13,18 @@ x_init_end = 0.0
 y_init_end = 1.0
 theta_init = 0.0
 
-X_INDEX = 0
-Y_INDEX = 1
-THETA_INDEX = 2
-
-LEFT_INDEX = -2
-RIGHT_INDEX = -1
-
 
 def grow_branches(leaf, radius_length, theta_step_size):
-    new_leaf_left = [current_leaf[X_INDEX]+radius_length*sin(current_leaf[THETA_INDEX]-theta_step_size),
-                     current_leaf[Y_INDEX]+radius_length *
-                     cos(current_leaf[THETA_INDEX]-theta_step_size),
-                     current_leaf[THETA_INDEX]-theta_step_size]
-    new_leaf_right = [current_leaf[X_INDEX]+radius_length*sin(current_leaf[THETA_INDEX]+theta_step_size),
-                      current_leaf[Y_INDEX]+radius_length *
-                      cos(current_leaf[THETA_INDEX]+theta_step_size),
-                      current_leaf[THETA_INDEX]+theta_step_size]
+    x, y, theta = leaf
+    new_theta_left = theta - theta_step_size
+    new_theta_right = theta + theta_step_size
+    new_x_left = x + radius_length*sin(new_theta_left)
+    new_x_right = x + radius_length*sin(new_theta_right)
+    new_y_left = y + radius_length*cos(new_theta_left)
+    new_y_right = y + radius_length*cos(new_theta_right)
+
+    new_leaf_left = [new_x_left, new_y_left, new_theta_left]
+    new_leaf_right = [new_x_right, new_y_right, new_theta_right]
     return new_leaf_left, new_leaf_right
 
 
