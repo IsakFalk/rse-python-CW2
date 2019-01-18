@@ -15,3 +15,15 @@ natural variability in running times) B is about 0.93 and log2(A) about -18.3.
 
 This also makes perfect sense, since we are essentially building a binary tree
 and so we would expect the time f(n) = O(2^n).
+
+# Running time (tree_np.py)
+
+The analysis is essentially the same, although we see that the numpy solution is
+much faster since it uses under-the-hood optimised C code and libraries (BLAS,
+LAPACK, etc.) to speed up matrix operations when expressing your operations in
+vectorised code.
+
+Reading off from the graph we see that in this case log2(f(n)) = Bn + log2(A)
+where now B is about 0.66 and log2(A) about -16.6. It is worth noting that due to
+overhead of creating the arrays, the numpy solution is slightly slower for small
+number of iterations, but quickly overtakes the list solution, around n = 7.
