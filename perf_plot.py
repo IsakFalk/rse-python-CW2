@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import tree
+import tree_np
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -57,6 +58,35 @@ if __name__ == '__main__':
     ax[1].plot(x[t > 0], 2 ** (k*x[t > 0] + m),
                color='cyan', marker='',
                label='lsq (tree.py): log2(f(n)) = {:.4f}*n + {:.4f}'.format(k, m))
+
+    # numpy solution
+    max_steps = 22
+
+    t = []
+    x = np.arange(1, max_steps + 1)
+    for num_steps in range(1, max_steps+1):
+        start_time = time.time()
+        tree_np.build_tree(num_steps, theta_step_size, radius_length,
+                           radius_multiplicative_update_factor, plot=False)
+        end_time = time.time()
+        walltime = end_time - start_time
+        t.append(walltime)
+    t = np.array(t)
+
+    # plot x vs t
+    ax[0].plot(x, t, color='r', label='empirical data (tree_np.py)')
+    ax[0].set_ylabel('Walltime (seconds)')
+    ax[0].legend()
+
+    # plot x vs log(t)
+    A = np.vstack([x[t > 0], np.ones(len(x[t > 0]))]).T
+    k, m = np.linalg.lstsq(A, np.log2(t[t > 0]), rcond=None)[0]
+
+    ax[1].semilogy(x, t, label='empirical data (tree_np.py)',
+                   color='r', linestyle='', basey=2)
+    ax[1].plot(x[t > 0], 2 ** (k*x[t > 0] + m),
+               color='orange', marker='',
+               label='lsq (tree_np.py): log2(f(n)) = {:.4f}*n + {:.4f}'.format(k, m))
 
     # Style graph
     ax[0].set_ylabel('Walltime (seconds)')
