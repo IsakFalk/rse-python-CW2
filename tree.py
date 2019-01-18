@@ -1,16 +1,21 @@
-from math import sin, cos
-from matplotlib import pyplot as plt
-s=1
-d=[[0,1,0]]
-plt.plot([0,0],[0,1])
-for i in range(5):
-    n=[]
-    for j in range(len(d)):
-        n.append([d[j][0]+s*sin(d[j][2]-0.1), d[j][1]+s*cos(d[j][2]-0.1), d[j][2]-0.1])
-        n.append([d[j][0]+s*sin(d[j][2]+0.1), d[j][1]+s*cos(d[j][2]+0.1), d[j][2]+0.1])
+from math import cos, sin
 
-        plt.plot([d[j][0], n[-2][0]],[d[j][1], n[-2][1]])
-        plt.plot([d[j][0], n[-1][0]],[d[j][1], n[-1][1]])
-    d=n
-    s*=0.6
+from matplotlib import pyplot as plt
+
+radius_length = 1
+current_leaves = [[0, 1, 0]]
+plt.plot([0, 0], [0, 1])
+for steps in range(5):
+    new_leaves = []
+    for j in range(len(current_leaves)):
+        new_leaves.append([current_leaves[j][0]+radius_length*sin(current_leaves[j][2]-0.1),
+                           current_leaves[j][1]+radius_length*cos(current_leaves[j][2]-0.1), current_leaves[j][2]-0.1])
+        new_leaves.append([current_leaves[j][0]+radius_length*sin(current_leaves[j][2]+0.1),
+                           current_leaves[j][1]+radius_length*cos(current_leaves[j][2]+0.1), current_leaves[j][2]+0.1])
+        plt.plot([current_leaves[j][0], new_leaves[-2][0]],
+                 [current_leaves[j][1], new_leaves[-2][1]])
+        plt.plot([current_leaves[j][0], new_leaves[-1][0]],
+                 [current_leaves[j][1], new_leaves[-1][1]])
+    current_leaves = new_leaves
+    radius_length *= 0.6
 plt.savefig('tree.png')
